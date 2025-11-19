@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MailIcon, PhoneIcon, LocationIcon, WarningIcon, SuccessIcon } from './Icons';
 import InteractiveMap from './InteractiveMap';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
@@ -26,6 +26,7 @@ const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [shake, setShake] = useState(false);
   const [ref, entry] = useIntersectionObserver({ threshold: 0.1 });
+  const formRef = useRef<HTMLFormElement>(null);
   const isVisible = !!entry?.isIntersecting;
 
   const validate = (data: FormState): Errors => {
@@ -84,23 +85,33 @@ const Contact: React.FC = () => {
     setErrors(validationErrors);
     
     if (Object.keys(validationErrors).length === 0) {
-      console.log('Form submitted:', formData);
+      // Sanitize data before processing
+      const cleanData = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        message: formData.message.trim(),
+      };
+      console.log('Form submitted safely:', cleanData);
       setSubmitted(true);
     } else {
       // Trigger shake animation
       setShake(true);
       setTimeout(() => setShake(false), 500);
       
-      // Focus first invalid field
-      const firstErrorField = document.querySelector('[aria-invalid="true"]');
-      if (firstErrorField instanceof HTMLElement) {
-        firstErrorField.focus();
+      // Focus first invalid field scoped to this form
+      if (formRef.current) {
+        const firstErrorField = formRef.current.querySelector('[aria-invalid="true"]');
+        if (firstErrorField instanceof HTMLElement) {
+          firstErrorField.focus();
+        }
       }
     }
   };
 
   const getInputClassName = (name: keyof FormState) => {
-    const base = "w-full bg-gray-700 border rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 transition-all duration-300";
+    // Added text-base to prevent iOS zooming on focus
+    const base = "w-full bg-gray-700 border rounded-lg py-3 px-4 text-white text-base focus:outline-none focus:ring-2 transition-all duration-300";
     if (!touched[name]) return `${base} border-gray-600 focus:border-accent focus:ring-accent`;
     return errors[name] 
       ? `${base} border-red-500 focus:ring-red-500 focus:border-red-500 bg-red-900/10` 
@@ -169,7 +180,7 @@ const Contact: React.FC = () => {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-5" noValidate>
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1 ml-1">Full Name</label>
                   <input type="text" name="name" id="name" required value={formData.name} onChange={handleChange} onBlur={handleBlur} className={getInputClassName('name')} placeholder="John Doe" aria-invalid={touched.name && !!errors.name} aria-describedby={touched.name && errors.name ? "name-error" : undefined} />

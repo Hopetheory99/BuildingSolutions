@@ -67,10 +67,12 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ media, title }) => {
   return (
     <>
       <div className="relative bg-transparent flex-shrink-0 flex items-center justify-center h-[55vh] bg-black/20">
+        {/* Shimmer effect while content loads */}
         {!isMediaLoaded && !videoError && (
           <div 
             className="absolute inset-0 animate-shimmer flex items-center justify-center z-0"
             style={{ background: 'linear-gradient(to right, #4a5568 8%, #606c80 18%, #4a5568 33%)', backgroundSize: '1000px 100%' }}
+            aria-hidden="true"
           >
           </div>
         )}
@@ -88,6 +90,8 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ media, title }) => {
                 src={currentItem.url}
                 poster={currentItem.poster}
                 controls
+                playsInline
+                preload="metadata"
                 className="w-full h-full object-contain"
                 onLoadedData={() => setIsMediaLoaded(true)}
                 onError={() => {

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Modal from './Modal';
 import { PhoneIcon, SuccessIcon, WarningIcon, CloseIcon } from './Icons';
 
@@ -21,6 +21,7 @@ const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({ isOpen, onC
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [shake, setShake] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   // Reset state when modal opens
   useEffect(() => {
@@ -49,6 +50,14 @@ const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({ isOpen, onC
     e.preventDefault();
     if (validate()) {
       setIsSubmitting(true);
+      // Sanitize before sending
+      const cleanData = {
+        name: formData.name.trim(),
+        phone: formData.phone.trim(),
+        preferredTime: formData.preferredTime
+      };
+      console.log('Callback requested safely:', cleanData);
+      
       // Simulate API call
       setTimeout(() => {
         setIsSubmitting(false);
@@ -57,6 +66,14 @@ const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({ isOpen, onC
     } else {
       setShake(true);
       setTimeout(() => setShake(false), 500);
+      
+      // Focus first invalid field
+      if (formRef.current) {
+        const firstErrorField = formRef.current.querySelector('[aria-invalid="true"]');
+        if (firstErrorField instanceof HTMLElement) {
+          firstErrorField.focus();
+        }
+      }
     }
   };
 
@@ -106,7 +123,7 @@ const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({ isOpen, onC
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label htmlFor="callback-name" className="block text-sm font-medium text-gray-300 mb-1">
                   Your Name
@@ -117,7 +134,7 @@ const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({ isOpen, onC
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`w-full bg-gray-700 border rounded-lg py-2.5 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent transition-all ${
+                  className={`w-full bg-gray-700 border rounded-lg py-3 px-4 text-white text-base focus:outline-none focus:ring-2 focus:ring-accent transition-all ${
                     errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-600'
                   }`}
                   placeholder="John Doe"
@@ -140,7 +157,7 @@ const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({ isOpen, onC
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className={`w-full bg-gray-700 border rounded-lg py-2.5 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent transition-all ${
+                  className={`w-full bg-gray-700 border rounded-lg py-3 px-4 text-white text-base focus:outline-none focus:ring-2 focus:ring-accent transition-all ${
                     errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-600'
                   }`}
                   placeholder="+880 1XXX NNNNNN"
@@ -162,7 +179,7 @@ const RequestCallbackModal: React.FC<RequestCallbackModalProps> = ({ isOpen, onC
                   name="preferredTime"
                   value={formData.preferredTime}
                   onChange={handleChange}
-                  className="w-full bg-gray-700 border border-gray-600 rounded-lg py-2.5 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent"
+                  className="w-full bg-gray-700 border border-gray-600 rounded-lg py-3 px-4 text-white text-base focus:outline-none focus:ring-2 focus:ring-accent"
                 >
                   <option value="Anytime">Anytime</option>
                   <option value="Morning">Morning (9AM - 12PM)</option>

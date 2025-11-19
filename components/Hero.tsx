@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ShieldCheckIcon, TruckIcon, CalculatorIcon, PackageIcon, PlayIcon, PauseIcon, VolumeUpIcon, VolumeOffIcon } from './Icons';
+import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
 const benefits = [
   {
@@ -22,10 +23,32 @@ const benefits = [
 
 const Hero: React.FC = () => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [progress, setProgress] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
+  
+  // Optimization: Observer to pause video when out of view
+  const [ref, entry] = useIntersectionObserver({ threshold: 0.2 });
+  const isVisible = !!entry?.isIntersecting;
+
+  useEffect(() => {
+    if (!videoRef.current) return;
+
+    if (isVisible) {
+      // Resume playing only if the user intended for it to be playing
+      if (isPlaying) {
+        videoRef.current.play().catch(() => {
+          // Autoplay might be prevented by browser policies
+          console.log('Autoplay prevented');
+        });
+      }
+    } else {
+      // Pause when out of view to save resources
+      videoRef.current.pause();
+    }
+  }, [isVisible, isPlaying]);
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -56,9 +79,26 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center text-center text-white pt-20 overflow-hidden group">
+    <section 
+      ref={ref}
+      id="home" 
+      className="relative min-h-screen flex items-center justify-center text-center text-white pt-20 overflow-hidden group"
+    >
       {/* Background Media Container */}
-      <div className="absolute top-0 left-0 w-full h-full z-0">
+      <div className="absolute top-0 left-0 w-full h-full z-0 bg-gray-900">
+        {/* Loading Skeleton / Shimmer */}
+        {!isImageLoaded && (
+           <div 
+             className="absolute inset-0 animate-shimmer z-0"
+             style={{ 
+               background: 'linear-gradient(to right, #111827 8%, #1f2937 18%, #111827 33%)', 
+               backgroundSize: '1000px 100%' 
+             }}
+             role="presentation"
+             aria-hidden="true"
+           ></div>
+        )}
+
         {/* Fallback Image: Visible initially, fades out when video loads */}
         <img 
           src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1920&auto=format&fit=crop"
@@ -66,6 +106,7 @@ const Hero: React.FC = () => {
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-0' : 'opacity-100'}`}
           loading="eager"
           fetchPriority="high"
+          onLoad={() => setIsImageLoaded(true)}
         />
         
         {/* Background Video: Invisible initially, fades in when loaded */}
@@ -75,6 +116,7 @@ const Hero: React.FC = () => {
           loop 
           muted={isMuted}
           playsInline
+          preload="auto"
           role="presentation"
           aria-hidden="true"
           onLoadedData={() => setIsVideoLoaded(true)}
@@ -126,7 +168,7 @@ const Hero: React.FC = () => {
       {isVideoLoaded && (
         <div className="absolute bottom-5 right-5 md:bottom-8 md:right-8 z-20 flex flex-col items-end gap-3">
           {/* Progress Bar */}
-          <div className="w-24 md:w-32 h-1.5 bg-gray-800/60 rounded-full overflow-hidden backdrop-blur-sm border border-white/10">
+          <div className="w-32 md:w-48 h-1.5 bg-gray-800/60 rounded-full overflow-hidden backdrop-blur-sm border border-white/10">
              <div 
                className="h-full bg-accent shadow-[0_0_8px_rgba(249,115,22,0.6)] transition-all duration-200 ease-linear"
                style={{ width: `${progress}%` }}

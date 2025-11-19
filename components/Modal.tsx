@@ -1,4 +1,6 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import ReactDOM from 'react-dom';
 import { CloseIcon } from './Icons';
 
 interface ModalProps {
@@ -71,17 +73,26 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, triggerRef, ar
       }
     };
     
+    // Focus the first element or the modal itself for accessibility
     const timer = setTimeout(() => {
       firstElement?.focus();
     }, 100);
 
+    // Prevent scrolling on body and avoid layout shift
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = 'hidden';
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+    
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       clearTimeout(timer);
       document.body.style.overflow = 'unset';
+      document.body.style.paddingRight = '0px';
       window.removeEventListener('keydown', handleKeyDown);
+      // Return focus to trigger button when modal closes
       if (triggerRef.current) {
         triggerRef.current.focus();
       }
@@ -90,14 +101,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, triggerRef, ar
 
   if (!isMounted) return null;
 
-  return (
+  const modalContent = (
     <div
       ref={modalRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby={ariaLabelledById}
       aria-describedby={ariaDescribedById}
-      className={`fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 sm:p-8 bg-black transition-opacity duration-300 ease-in-out ${isVisible ? 'bg-opacity-80' : 'bg-opacity-0'}`}
+      className={`fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto p-4 sm:p-8 bg-black transition-opacity duration-300 ease-in-out ${isVisible ? 'bg-opacity-80' : 'bg-opacity-0'}`}
       onClick={handleClose}
       onTransitionEnd={onTransitionEnd}
     >
@@ -117,6 +128,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, triggerRef, ar
       </div>
     </div>
   );
+
+  // Use React Portal to render modal outside of the parent DOM hierarchy
+  return ReactDOM.createPortal(modalContent, document.body);
 };
 
 export default Modal;
