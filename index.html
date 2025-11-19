@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth scroll-pt-20">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Building Solution | Construction Materials Supplier in Dhaka, Bangladesh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1e3a8a', // construction-blue
+              accent: {
+                DEFAULT: '#f97316', // construction-orange
+                hover: '#fb923c',
+              },
+              'construction-gray': '#374151',
+              success: '#059669', // construction-green
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            animation: {
+              'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+              'shimmer': 'shimmer 1.5s infinite linear',
+              'scroll': 'scroll 40s linear infinite',
+              'fade-in': 'fadeIn 0.5s ease-out forwards',
+              'draw-circle': 'draw-circle 0.8s ease-in-out forwards',
+              'draw-check': 'draw-check 0.4s ease-in-out 0.8s forwards',
+              'wiggle': 'wiggle 1s ease-in-out infinite',
+              'float': 'float 6s ease-in-out infinite', 
+              'pulse-soft': 'pulse-soft 3s infinite',
+              'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+            },
+            keyframes: {
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(30px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              shimmer: {
+                '0%': { 'background-position': '-1000px 0' },
+                '100%': { 'background-position': '1000px 0' },
+              },
+              scroll: {
+                '0%': { transform: 'translateX(0)' },
+                '100%': { transform: 'translateX(calc(-250px * 7))' },
+              },
+              'draw-circle': {
+                'from': { 'stroke-dashoffset': '314' },
+                'to': { 'stroke-dashoffset': '0' },
+              },
+              'draw-check': {
+                'from': { 'stroke-dashoffset': '48' },
+                'to': { 'stroke-dashoffset': '0' },
+              },
+              wiggle: {
+                '0%, 100%': { transform: 'rotate(-3deg)' },
+                '50%': { transform: 'rotate(3deg)' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-15px)' },
+              },
+              'pulse-soft': {
+                '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+                '50%': { opacity: '0.8', transform: 'scale(1.05)' },
+              },
+              shake: {
+                '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+                '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+                '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+                '40%, 60%': { transform: 'translate3d(4px, 0, 0)' }
+              }
+            },
+          }
+        }
+      }
+    </script>
+    <style>
+      @media (prefers-reduced-motion: reduce) {
+        .animate-scroll, .animate-float, .animate-pulse-soft, .animate-wiggle, .animate-shake {
+          animation-play-state: paused !important;
+          animation: none !important;
+        }
+      }
+      .animate-delay {
+        animation-delay: var(--animation-delay, 0s);
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+</head>
+  <body class="bg-gray-900 text-gray-300 font-sans">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
