@@ -1,179 +1,103 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { BuildingIcon } from './Icons';
 import RequestCallbackModal from './RequestCallbackModal';
 
-const NavLink: React.FC<{ href: string; children: React.ReactNode; onClick?: () => void; className?: string; }> = ({ href, children, onClick, className }) => {
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (onClick) {
-      onClick();
-    }
+interface HeaderProps {
+  currentPage: string;
+  onNavigate: (page: string) => void;
+}
 
-    if (href.startsWith('#')) {
-      e.preventDefault();
-      const targetId = href.substring(1);
-
-      if (targetId === 'home' || !targetId) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        if (history.pushState) {
-          // Clean URL without adding encoded space
-          history.pushState(null, "", window.location.pathname);
-        }
-        return;
-      }
-
-      const targetElement = document.getElementById(targetId);
-      if (targetElement) {
-        targetElement.scrollIntoView({
-          behavior: 'smooth',
-        });
-        if (history.pushState) {
-          history.pushState(null, "", href);
-        }
-      }
-    }
-  };
-
-  return (
-    <a
-      href={href}
-      onClick={handleClick}
-      className={className ?? "text-gray-300 hover:text-accent transition-colors duration-300 px-3 py-2 rounded-md text-sm font-medium"}
-    >
-      {children}
-    </a>
-  );
-};
-
-const navLinks = [
-  { href: '#home', label: 'Home' },
-  { href: '#services', label: 'Services' },
-  { href: '#about', label: 'About Us' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#team', label: 'Team' },
-  { href: '#testimonials', label: 'Testimonials' },
-  { href: '#clients', label: 'Clients' },
-  { href: '#contact', label: 'Contact' },
-];
-
-const Header: React.FC = () => {
+const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
   const [isCallbackModalOpen, setIsCallbackModalOpen] = useState(false);
-  const lastScrollY = useRef(0);
-  
-  // Ref for the button that triggers the modal to manage focus
   const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const threshold = 5; // Prevent flicker on minor scroll adjustments
-
-      // Update scrolled state for styling (background, height)
-      setIsScrolled(currentScrollY > 10);
-
-      // Ignore minor scrolls to prevent UI flickering
-      if (Math.abs(currentScrollY - lastScrollY.current) < threshold) {
-        return;
-      }
-      
-      // Determine visibility: always visible at top, otherwise show on scroll up, hide on scroll down
-      if (currentScrollY <= 10) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(currentScrollY < lastScrollY.current);
-      }
-
-      // Update the last scroll position
-      lastScrollY.current = currentScrollY;
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const closeMenu = () => setIsOpen(false);
-  
-  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+
+  const handleNavClick = (e: React.MouseEvent, page: string, sectionId?: string) => {
     e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (history.pushState) {
-      history.pushState(null, "", window.location.pathname);
+    onNavigate(page);
+    closeMenu();
+    
+    if (sectionId) {
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
-  
-  const openCallbackModal = () => {
-    setIsCallbackModalOpen(true);
-    closeMenu();
-  };
+
+  const isMaterialsActive = currentPage === 'materials' || currentPage === 'material-detail';
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-gray-900/95 backdrop-blur-lg shadow-md' : 'bg-transparent'} ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-gray-900/95 backdrop-blur-lg shadow-md' : 'bg-gray-900/80 backdrop-blur-md'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`flex items-center justify-between transition-all duration-300 ${isScrolled ? 'h-16' : 'h-20'}`}>
             <div className="flex items-center">
-              <a href="#home" onClick={handleLogoClick} className="flex-shrink-0 flex items-center gap-2 text-white font-bold text-xl">
+              <a href="#" onClick={(e) => handleNavClick(e, 'home')} className="flex-shrink-0 flex items-center gap-2 text-white font-bold text-xl">
                 <BuildingIcon className="h-8 w-8 text-accent" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-orange-400">Building Solution</span>
               </a>
             </div>
             <div className="hidden xl:block">
               <div className="ml-10 flex items-baseline space-x-4">
-                {navLinks.map((link) => (
-                  <NavLink key={link.href} href={link.href}>{link.label}</NavLink>
-                ))}
+                <button onClick={(e) => handleNavClick(e, 'home')} className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${currentPage === 'home' ? 'text-accent' : 'text-gray-300 hover:text-white'}`}>Home</button>
+                <button onClick={(e) => handleNavClick(e, 'materials')} className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${isMaterialsActive ? 'text-accent' : 'text-gray-300 hover:text-white'}`}>Materials Catalog</button>
+                <button onClick={(e) => handleNavClick(e, 'checklist')} className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${currentPage === 'checklist' ? 'text-accent' : 'text-gray-300 hover:text-white'}`}>Building Checklist</button>
+                <button onClick={(e) => handleNavClick(e, 'gallery')} className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${currentPage === 'gallery' ? 'text-accent' : 'text-gray-300 hover:text-white'}`}>Gallery</button>
+                <button onClick={(e) => handleNavClick(e, 'home', 'about')} className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About Us</button>
+                
                 <button
                   ref={triggerRef}
-                  onClick={openCallbackModal}
+                  onClick={() => setIsCallbackModalOpen(true)}
                   className="ml-4 px-4 py-2 border border-accent text-accent hover:bg-accent hover:text-white rounded-md text-sm font-bold transition-all duration-300"
                 >
-                  Request Callback
+                  Request Quote
                 </button>
               </div>
             </div>
             <div className="-mr-2 flex xl:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                type="button"
-                className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                aria-controls="mobile-menu"
-                aria-expanded={isOpen}
+                className="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none"
               >
-                <span className="sr-only">Open main menu</span>
-                {!isOpen ? (
-                  <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                ) : (
-                  <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                )}
+                <span className="sr-only">Open menu</span>
+                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  {isOpen ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /> : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />}
+                </svg>
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile menu, show/hide based on menu state */}
         {isOpen && (
-          <div className="xl:hidden bg-gray-900/95 backdrop-blur-lg shadow-xl border-t border-gray-800 animate-fade-in" id="mobile-menu">
+          <div className="xl:hidden bg-gray-900 shadow-xl border-t border-gray-800 animate-fade-in">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {navLinks.map((link) => (
-                 <NavLink key={link.href} href={link.href} onClick={closeMenu} className="text-gray-300 hover:text-accent transition-colors duration-300 block px-3 py-2 rounded-md text-base font-medium">{link.label}</a>
-              ))}
+              <button onClick={(e) => handleNavClick(e, 'home')} className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Home</button>
+              <button onClick={(e) => handleNavClick(e, 'materials')} className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 ${isMaterialsActive ? 'text-white bg-gray-800' : 'text-gray-300 hover:text-white'}`}>Materials Catalog</button>
+              <button onClick={(e) => handleNavClick(e, 'checklist')} className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Building Checklist</button>
+              <button onClick={(e) => handleNavClick(e, 'gallery')} className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Gallery</button>
               <button
-                onClick={openCallbackModal}
-                className="w-full text-left block px-3 py-2 rounded-md text-base font-bold text-accent border border-accent/30 hover:bg-accent hover:text-white transition-all duration-300 mt-4"
+                onClick={() => { setIsCallbackModalOpen(true); closeMenu(); }}
+                className="w-full text-left block px-3 py-2 rounded-md text-base font-bold text-accent border border-accent/30 hover:bg-accent hover:text-white mt-4"
               >
-                Request Callback
+                Request Quote
               </button>
             </div>
           </div>
         )}
       </header>
-
       <RequestCallbackModal 
         isOpen={isCallbackModalOpen} 
         onClose={() => setIsCallbackModalOpen(false)} 

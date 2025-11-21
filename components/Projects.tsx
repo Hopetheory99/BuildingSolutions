@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import ProjectCard from './ProjectCard';
 
@@ -30,11 +31,11 @@ const projectsData: Project[] = [
       { type: 'image', url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80&auto=format&fit=crop' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&q=80&auto=format&fit=crop' }
     ],
-    title: 'Modern Corporate Headquarters',
-    location: 'Downtown, Metropolis',
+    title: 'Gulshan Skyline Tower',
+    location: 'Gulshan Avenue, Dhaka',
     category: 'Commercial',
-    description: 'A state-of-the-art corporate campus featuring sustainable design, open-concept workspaces, and cutting-edge technology infrastructure to foster innovation and collaboration.',
-    caseStudy: 'The primary challenge for the Modern Corporate Headquarters was to create a building that was not only aesthetically pleasing but also a leader in energy efficiency. We implemented a passive solar design, a green roof, and a state-of-the-art HVAC system, resulting in a 40% reduction in energy consumption compared to buildings of similar size. The project was completed two months ahead of schedule and under budget, setting a new standard for commercial construction in Metropolis.'
+    description: 'A 20-story LEED-certified corporate headquarters featuring double-glazed glass facades for heat reduction and a rooftop garden.',
+    caseStudy: 'Constructing in the heart of Gulshan-2 required strict adherence to RAJUK safety protocols and traffic management. We supplied high-grade BSRM Xtreme steel and Holcim cement to ensure structural integrity against seismic activity. The project features a modern HVAC system optimized for Dhaka\'s humidity, reducing energy costs by 30%.'
   },
   {
     media: [
@@ -42,35 +43,11 @@ const projectsData: Project[] = [
       { type: 'image', url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80&auto=format&fit=crop' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1200&q=80&auto=format&fit=crop' }
     ],
-    title: 'Luxury Residential Tower',
-    location: 'Oceanview Drive, Coast City',
+    title: 'Bashundhara Luxury Heights',
+    location: 'Block I, Bashundhara R/A',
     category: 'Residential',
-    description: 'An iconic residential skyscraper offering breathtaking ocean views, premium amenities including a rooftop infinity pool, a private cinema, and bespoke concierge services.',
-    caseStudy: 'Constructing the Luxury Residential Tower on a tight urban footprint with minimal disruption to the surrounding high-end neighborhood was a key challenge. Our team employed advanced just-in-time material delivery logistics and off-site prefabrication for key components. This strategy not only accelerated the construction timeline by 15% but also significantly reduced on-site noise and traffic, earning praise from the local community and stakeholders.'
-  },
-  {
-    media: [
-      { type: 'image', url: 'https://images.unsplash.com/photo-1559902213-1a206a43e493?w=800&q=80&auto=format&fit=crop' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1200&q=80&auto=format&fit=crop' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&q=80&auto=format&fit=crop' }
-    ],
-    title: 'Community Arts Center',
-    location: 'Cultural District, Star City',
-    category: 'Commercial',
-    description: 'A vibrant cultural hub designed to inspire creativity. The center includes a modern art gallery, performance theater, and workshop spaces for local artists and the community.',
-    caseStudy: 'The Community Arts Center required a unique blend of acoustic engineering and versatile space design. We collaborated with sound engineers to create a concert hall with world-class acoustics while ensuring adjacent workshop spaces remained soundproof. The use of modular wall systems allows the main gallery to be reconfigured for different exhibitions, providing a truly flexible and future-proof venue for the arts.'
-  },
-  {
-    media: [
-      { type: 'image', url: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&q=80&auto=format&fit=crop' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=80&auto=format&fit=crop' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1605276374104-5de67d216b04?w=1200&q=80&auto=format&fit=crop' }
-    ],
-    title: 'Suburban Family Home Renovation',
-    location: 'Maple Street, Suburbia',
-    category: 'Residential',
-    description: 'A complete transformation of a classic suburban house into a modern, energy-efficient family home with a spacious open-plan living area and seamless indoor-outdoor flow.',
-    caseStudy: 'The goal of this renovation was to modernize a 1970s home while preserving its original character. We uncovered and restored original hardwood floors and integrated them with a new, open-concept kitchen and living area. A major structural change involved installing a 25-foot steel beam to remove load-bearing walls, creating the seamless indoor-outdoor flow the clients desired. The result is a home that respects its history while embracing modern living.'
+    description: 'A premium 12-unit apartment complex featuring imported marble flooring, smart home integration, and community amenities.',
+    caseStudy: 'For this high-end project in Bashundhara Residential Area, the client demanded flawless finishing. We sourced Italian marble and premium RAK sanitary ware directly to cut syndicate costs. Our team coordinated the supply of 500 tons of rod and 20,000 bags of Shah Cement, ensuring zero downtime during the casting phase.'
   },
   {
     media: [
@@ -78,22 +55,46 @@ const projectsData: Project[] = [
       { type: 'image', url: 'https://images.unsplash.com/photo-1581092448348-a5737b8830b5?w=1200&q=80&auto=format&fit=crop' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?w=1200&q=80&auto=format&fit=crop' }
     ],
-    title: 'Industrial Warehouse & Logistics Hub',
-    location: 'Industrial Park, Central City',
+    title: 'Gazipur Textile Hub',
+    location: 'Konabari, Gazipur',
     category: 'Industrial',
-    description: 'A massive, high-ceiling warehouse built for optimal logistics, featuring automated sorting systems, extensive loading docks, and strategic access to major transport routes.',
-    caseStudy: 'This project\'s success hinged on the precise execution of pouring a 500,000-square-foot high-tolerance concrete slab, essential for the automated robotics that would operate within the facility. Using laser-guided screeds and a specialized concrete mix, we achieved a floor flatness rating that exceeded industry standards. This precision engineering ensures the long-term operational efficiency of the client\'s automated logistics systems.'
+    description: 'A massive 50,000 sqft steel-structure factory floor designed for heavy textile machinery and automated logistics.',
+    caseStudy: 'Speed was critical for this export-oriented factory. We utilized pre-engineered steel buildings (PEB) technology to erect the structure 40% faster than traditional methods. We supplied industrial-grade flooring solutions capable of withstanding heavy forklift traffic and ensured a steady supply of Sylhet sand and stone chips for the foundation work.'
+  },
+  {
+    media: [
+      { type: 'image', url: 'https://images.unsplash.com/photo-1559902213-1a206a43e493?w=800&q=80&auto=format&fit=crop' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1200&q=80&auto=format&fit=crop' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200&q=80&auto=format&fit=crop' }
+    ],
+    title: 'Uttara Community Center',
+    location: 'Sector 4, Uttara',
+    category: 'Commercial',
+    description: 'A multi-purpose community hall with acoustic treatment, underground parking, and a rooftop convention center.',
+    caseStudy: 'Located in a dense residential sector of Uttara, noise control during construction was a priority. We implemented strict work-hour schedules and used sound-dampening scaffolding curtains. The building utilizes local AAC blocks to reduce structural load and improve thermal insulation, a sustainable choice for Dhaka\'s climate.'
+  },
+  {
+    media: [
+      { type: 'image', url: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&q=80&auto=format&fit=crop' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=80&auto=format&fit=crop' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1605276374104-5de67d216b04?w=1200&q=80&auto=format&fit=crop' }
+    ],
+    title: 'Dhanmondi Duplex Renovation',
+    location: 'Road 27, Dhanmondi',
+    category: 'Residential',
+    description: 'Transforming a 1990s residence into a modern duplex with open floor plans and smart lighting systems.',
+    caseStudy: 'Renovating an old structure in Dhanmondi presents unique structural challenges. We conducted thorough digital scans of the existing columns before retrofitting. We supplied premium teak wood from Chittagong for the interior finishes and replaced the old plumbing with durable CPVC pipes to ensure longevity for the next generation.'
   },
   {
     media: [
       { type: 'image', url: 'https://images.unsplash.com/photo-1551842369-1e2f7514a22b?w=800&q=80&auto=format&fit=crop' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1526733986429-9c5b742523a7?w=1200&q=80&auto=format&fit=crop' }
     ],
-    title: 'Historic Building Restoration',
-    location: 'Old Town, Gotham',
+    title: 'Puran Dhaka Heritage Restoration',
+    location: 'Lalbagh, Old Dhaka',
     category: 'Industrial',
-    description: 'A meticulous restoration project that preserved the architectural integrity of a landmark building while upgrading its structural and functional systems for contemporary use.',
-    caseStudy: 'Restoring the facade of this 19th-century landmark involved sourcing period-accurate materials and using traditional masonry techniques. Our artisans painstakingly repointed the original brickwork and custom-milled replacements for damaged ornate woodwork. Internally, we integrated modern electrical and plumbing systems with minimal intrusion on the historic interior, a delicate balance that successfully preserved the building\'s soul for future generations.'
+    description: 'Careful restoration of a colonial-era warehouse, preserving the original brickwork while upgrading utilities for modern commercial use.',
+    caseStudy: 'Working in the narrow lanes of Old Dhaka required specialized logistics. We used small pickup trucks (Laguna size) to transport materials at night to avoid traffic. The restoration involved sourcing specialized lime-surki mortar to match the original construction materials, preserving the historical authenticity of the building.'
   }
 ];
 
@@ -115,7 +116,7 @@ const Projects: React.FC = () => {
         <div className="text-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">Our Projects</h2>
           <p className="max-w-2xl mx-auto text-lg text-gray-400">
-            A glimpse into our commitment to quality, craftsmanship, and client satisfaction.
+            Building the future of Dhaka, one structure at a time.
           </p>
         </div>
 

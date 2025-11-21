@@ -1,28 +1,39 @@
+
 import React from 'react';
-import { PackageIcon, CalculatorIcon, TruckIcon, ShieldCheckIcon } from './Icons';
+import { PackageIcon, CalculatorIcon, TruckIcon, ShieldCheckIcon, HardHatIcon, LightningBoltIcon } from './Icons';
 import ServiceCard from './ServiceCard';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
 const servicesData = [
   {
     icon: <PackageIcon className="h-12 w-12 text-accent mb-4" />,
-    title: 'Material Sourcing',
-    description: 'Comprehensive sourcing of materials including cement, sand, rods, and bricks from our verified supplier network.'
+    title: 'Material Sourcing & Supply',
+    description: 'Direct sourcing of cement, steel, sand, and stones from trusted manufacturers with transparent pricing.'
+  },
+  {
+    icon: <HardHatIcon className="h-12 w-12 text-accent mb-4" />,
+    title: 'Skilled Labor Supply',
+    description: 'Providing vetted masons, electricians, plumbers, and site supervisors for daily or contract basis.'
   },
   {
     icon: <CalculatorIcon className="h-12 w-12 text-accent mb-4" />,
-    title: 'Project Consultation',
-    description: 'Expert consultation to plan material requirements, optimize costs, and ensure project success from the start.'
+    title: 'Quote Comparison',
+    description: 'We analyze market rates to negotiate the best deals for you, ensuring a flat 10-15% service markup.'
   },
   {
     icon: <TruckIcon className="h-12 w-12 text-accent mb-4" />,
-    title: 'Supply Chain Management',
-    description: 'End-to-end supply chain management for timely delivery, inventory optimization, and seamless project execution.'
+    title: 'On-Time Logistics',
+    description: 'Reliable fleet management to ensure materials reach your Dhaka construction site exactly when needed.'
   },
   {
     icon: <ShieldCheckIcon className="h-12 w-12 text-accent mb-4" />,
-    title: 'Quality Assurance',
-    description: 'Rigorous quality control to ensure all materials meet industry standards and your project specifications.'
+    title: 'Project Coordination',
+    description: 'End-to-end oversight of supply schedules to prevent work stoppages and material wastage.'
+  },
+  {
+    icon: <LightningBoltIcon className="h-12 w-12 text-accent mb-4" />,
+    title: 'Equipment & Backup Power',
+    description: 'Rental and supply of heavy machinery, passenger lifts, and diesel generators for uninterrupted work.'
   }
 ];
 
@@ -36,10 +47,10 @@ const Services: React.FC = () => {
         <div className="text-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">Our Services</h2>
           <p className="max-w-3xl mx-auto text-lg text-gray-400">
-            Comprehensive construction supply solutions designed to streamline your projects, reduce costs, and ensure quality delivery every time.
+            From raw materials to skilled hands, we provide everything you need to build in Dhaka.
           </p>
         </div>
-        <div ref={ref} className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div ref={ref} className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {servicesData.map((service, index) => (
             <ServiceCard 
               key={index} 

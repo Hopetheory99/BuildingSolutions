@@ -1,7 +1,9 @@
+
 import React from 'react';
 
 const InteractiveMap: React.FC = () => {
-  const officeLocation = "123 Construction Ave, Dhaka, Bangladesh";
+  // Updated location
+  const officeLocation = "Japan Garden City, Mohammadpur, Dhaka, Bangladesh";
   const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(officeLocation)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 
   return (

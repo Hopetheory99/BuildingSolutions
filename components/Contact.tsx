@@ -135,7 +135,7 @@ const Contact: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-white">Our Office</h3>
-                <p className="text-gray-400 mt-1">123 Construction Ave, Dhaka, Bangladesh</p>
+                <p className="text-gray-400 mt-1">Japan Garden City, Mohammadpur, Dhaka</p>
               </div>
             </div>
             <div className="flex items-start space-x-4 group">
@@ -144,7 +144,7 @@ const Contact: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-white">Email Us</h3>
-                <p className="text-gray-400 mt-1 hover:text-accent transition-colors"><a href="mailto:contact@buildingsolution.com">contact@buildingsolution.com</a></p>
+                <p className="text-gray-400 mt-1 hover:text-accent transition-colors"><a href="mailto:fahadibrahim@buildingsolution.com">fahadibrahim@buildingsolution.com</a></p>
               </div>
             </div>
             <div className="flex items-start space-x-4 group">
@@ -153,7 +153,7 @@ const Contact: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-white">Call Us</h3>
-                <p className="text-gray-400 mt-1 hover:text-accent transition-colors"><a href="tel:+1234567890">+1 (234) 567-890</a></p>
+                <p className="text-gray-400 mt-1 hover:text-accent transition-colors"><a href="tel:+8801670944800">+880 1670 944800</a></p>
               </div>
             </div>
             <div className="mt-6">

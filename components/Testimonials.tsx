@@ -1,21 +1,22 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { QuoteIcon, ChevronLeftIcon, ChevronRightIcon } from './Icons';
 
 const testimonialsData = [
   {
-    quote: "Building Solution transformed our office space. Their attention to detail and commitment to the schedule was outstanding. We couldn't be happier with the result.",
-    client: "Jessica Miller",
-    project: "CEO, Innovate Inc."
+    quote: "Building Solution's transparency with material pricing is a game-changer in Dhaka. They delivered 500 bags of Shah Cement to our Mirpur site within 24 hours. Highly recommended!",
+    client: "Engr. Anisur Rahman",
+    project: "MD, Urban Heights Ltd."
   },
   {
-    quote: "From concept to completion, their team was professional, communicative, and highly skilled. They delivered our dream home on time and within budget.",
-    client: "Mark & Emily Johnson",
-    project: "Residential Home Project"
+    quote: "I was worried about managing construction from abroad. Fahad and his team handled everything for my house in Bashundhara—from rod supply to finding skilled masons. Trustworthy service.",
+    client: "Mrs. Nasreen Akter",
+    project: "Homeowner, Bashundhara R/A"
   },
   {
-    quote: "The complexity of our industrial facility required a top-tier contractor, and Building Solution delivered. Their project management was flawless.",
-    client: "Robert Brown",
-    project: "Operations Director, LogiCorp"
+    quote: "The quality of Sylhet sand and stone chips supplied for our factory in Gazipur was top-notch. No adulteration, full measurement, and professional billing.",
+    client: "Mr. Shafiqul Islam",
+    project: "Project Director, Apex Textiles"
   },
 ];
 
@@ -80,7 +81,7 @@ const Testimonials: React.FC = () => {
         <div className="text-center">
           <h2 id="testimonials-heading" className="text-3xl sm:text-4xl font-extrabold text-white mb-4">What Our Clients Say</h2>
           <p className="max-w-2xl mx-auto text-lg text-gray-400">
-            Our success is measured by our clients' satisfaction.
+            Building trust across Dhaka with every bag of cement and every rod of steel.
           </p>
         </div>
         <div 
